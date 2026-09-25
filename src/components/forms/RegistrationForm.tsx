@@ -1,0 +1,186 @@
+"use client";
+
+import { FormEvent, useState } from "react";
+import { Loader2, CheckCircle2 } from "lucide-react";
+import { registrationSchema } from "@/lib/validation";
+import { cn } from "@/lib/utils";
+import type { ProgramCardData } from "@/types";
+
+type Status = "idle" | "submitting" | "success" | "error";
+type Errors = Partial<Record<"fullName" | "email" | "programId", string>>;
+
+export default function RegistrationForm({ programs }: { programs: ProgramCardData[] }) {
+  const [status, setStatus] = useState<Status>("idle");
+  const [errors, setErrors] = useState<Errors>({});
+  const [serverError, setServerError] = useState<string | null>(null);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setServerError(null);
+
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    const payload = {
+      fullName: String(data.get("fullName") || "").trim(),
+      email: String(data.get("email") || "").trim(),
+      phone: String(data.get("phone") || "").trim() || undefined,
+      programId: String(data.get("programId") || "") || undefined,
+      message: String(data.get("message") || "").trim() || undefined,
+    };
+
+    const parsed = registrationSchema.safeParse(payload);
+    if (!parsed.success) {
+      const fieldErrors = parsed.error.flatten().fieldErrors;
+      setErrors({
+        fullName: fieldErrors.fullName?.[0],
+        email: fieldErrors.email?.[0],
+      });
+      return;
+    }
+    setErrors({});
+    setStatus("submitting");
+
+    try {
+      const res = await fetch("/api/registrations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(parsed.data),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        throw new Error(body?.error || "Something went wrong.");
+      }
+      setStatus("success");
+      form.reset();
+    } catch (err) {
+      setStatus("error");
+      setServerError(err instanceof Error ? err.message : "Something went wrong.");
+    }
+  }
+
+  if (status === "success") {
+    return (
+      <div className="flex flex-col items-center rounded-xl2 border border-line bg-white p-10 text-center">
+        <CheckCircle2 className="h-10 w-10 text-pine" />
+        <h3 className="mt-4 font-display text-2xl text-ink">You're registered.</h3>
+        <p className="mt-2 max-w-sm font-body text-sm text-ink-soft">
+          We've received your registration and will email you with payment and
+          preparation details.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} noValidate className="rounded-xl2 border border-line bg-white p-6 sm:p-8">
+      <div className="grid gap-6 sm:grid-cols-2">
+        <Field label="Full name" htmlFor="fullName" error={errors.fullName}>
+          <input
+            id="fullName"
+            name="fullName"
+            type="text"
+            autoComplete="name"
+            className={inputClass(!!errors.fullName)}
+            placeholder="Ananya Rao"
+          />
+        </Field>
+
+        <Field label="Email" htmlFor="email" error={errors.email}>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            className={inputClass(!!errors.email)}
+            placeholder="ananya@example.com"
+          />
+        </Field>
+
+        <Field label="Phone (optional)" htmlFor="phone">
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            autoComplete="tel"
+            className={inputClass(false)}
+            placeholder="+91 98765 43210"
+          />
+        </Field>
+
+        <Field label="Program" htmlFor="programId">
+          <select id="programId" name="programId" defaultValue="" className={inputClass(false)}>
+            <option value="">I'm not sure yet</option>
+            {programs.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.title}
+              </option>
+            ))}
+          </select>
+        </Field>
+      </div>
+
+      <div className="mt-6">
+        <Field label="Anything we should know? (optional)" htmlFor="message">
+          <textarea
+            id="message"
+            name="message"
+            rows={4}
+            className={inputClass(false)}
+            placeholder="Dietary needs, prior experience, accessibility requirements..."
+          />
+        </Field>
+      </div>
+
+      <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <p className="font-body text-xs text-ink-soft">
+          Submitting this form does not confirm payment — we'll follow up by
+          email with next steps.
+        </p>
+        <button
+          type="submit"
+          disabled={status === "submitting"}
+          className="flex w-full items-center justify-center gap-2 rounded-full bg-saffron px-6 py-3 font-body text-sm font-medium text-white transition-colors hover:bg-saffron-dark disabled:opacity-60 sm:w-auto"
+        >
+          {status === "submitting" && <Loader2 className="h-4 w-4 animate-spin" />}
+          {status === "submitting" ? "Submitting…" : "Submit registration"}
+        </button>
+      </div>
+
+      {status === "error" && serverError && (
+        <p role="alert" className="mt-4 font-body text-xs text-red-700">
+          {serverError}
+        </p>
+      )}
+    </form>
+  );
+}
+
+function inputClass(hasError: boolean) {
+  return cn(
+    "w-full rounded-lg border bg-stone px-3.5 py-2.5 font-body text-sm text-ink placeholder:text-ink-soft/50",
+    "focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron",
+    hasError ? "border-red-700" : "border-line"
+  );
+}
+
+function Field({
+  label,
+  htmlFor,
+  error,
+  children,
+}: {
+  label: string;
+  htmlFor: string;
+  error?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div>
+      <label htmlFor={htmlFor} className="mb-1.5 block font-body text-xs font-medium text-ink-soft">
+        {label}
+      </label>
+      {children}
+      {error && <p className="mt-1.5 font-body text-xs text-red-700">{error}</p>}
+    </div>
+  );
+}
