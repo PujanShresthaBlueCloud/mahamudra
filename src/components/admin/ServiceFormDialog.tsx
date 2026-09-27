@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { PrismaClient, ProgramLevel } from "@prisma/client";
+console.log(ProgramLevel, "ProgramLevel -----------------");
 import {
   Dialog,
   DialogContent,
@@ -15,12 +17,12 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { ServiceRow } from "./ServicesTable";
 
-const CATEGORIES = [
-  { value: "RETREAT", label: "Retreat" },
-  { value: "ONLINE_SESSION", label: "Online session" },
-  { value: "WORKSHOP", label: "Workshop" },
-  { value: "ONE_ON_ONE", label: "One-on-one" },
-];
+// const CATEGORIES = [
+//   { value: "RETREAT", label: "Retreat" },
+//   { value: "ONLINE_SESSION", label: "Online session" },
+//   { value: "WORKSHOP", label: "Workshop" },
+//   { value: "ONE_ON_ONE", label: "One-on-one" },
+// ];
 
 export function ServiceFormDialog({
   open,
@@ -42,27 +44,28 @@ export function ServiceFormDialog({
     setError(null);
 
     const form = new FormData(e.currentTarget);
+    
     const payload = {
       title: String(form.get("title") || ""),
       slug: String(form.get("slug") || ""),
       summary: String(form.get("summary") || ""),
       description: String(form.get("description") || ""),
       level: String(form.get("level") || ""),
+      location: String(form.get("location") || ""),
       // imageUrl: String(form.get("image") || ""),
-      imageUrl: String(form.get("image") || ""),
       durationDays: Number(form.get("durationDays") || 0),
       // price: Number(form.get("price") || 0),
       // capacity: Number(form.get("capacity") || 0),
       isActive: form.get("isActive") === "on",
     };
-
+    console.log("payload------------------------------", payload);
+    
     try {
       const url = service ? `/api/admin/services/${service.id}` : "/api/admin/services";
-      console.log(payload.imageUrl, "payload");
-      console.log(url, "url -------");
       const method = service ? "PATCH" : "POST";
-      console.log(method, "method -------");
-      const res = await fetch(url, {
+
+      console.log("payload------------------------------", payload);
+      const res = await fetch( url, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -125,15 +128,20 @@ export function ServiceFormDialog({
               <select
                 id="level"
                 name="level"
-                defaultValue={service?.level ?? "RETREAT"}
+                defaultValue={service?.level ?? "BEGINNER"}
                 className="mt-1.5 flex h-10 w-full rounded-lg border border-stone-300 bg-white px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600"
               >
-                {CATEGORIES.map((c) => (
-                  <option key={c.value} value={c.value}>
-                    {c.label}
+                {Object.values(ProgramLevel).map((c) => (
+                  <option key={c} value={c}>
+                    {c.replace("_", " ")}
                   </option>
                 ))}
               </select>
+            </div>
+
+            <div>
+              <Label htmlFor="location">Location </Label>
+              <Input id="location" name="location" required className="mt-1.5" />
             </div>
 
             <div>
@@ -142,7 +150,7 @@ export function ServiceFormDialog({
             </div>
             {/* <div>
               <Label htmlFor="image">Upload image</Label>
-              <Input id="image" name="image" type="file" accept="image/*" className="mt-1.5" />
+              <Input id="image" name="image"  className="mt-1.5" />
             </div> */}
             {/* <div>
               <Label htmlFor="price">Price (USD)</Label>

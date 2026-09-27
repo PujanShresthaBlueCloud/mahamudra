@@ -12,7 +12,6 @@ export default async function AdminServicesPage() {
   // component prop — convert to string/number first.
   // const serialized = services.map((s) => ({ ...s, price: s.price.toString() }));
   const serialized = services.map((s) => ({ ...s }));
-  // const serialized = "";
 
   return (
     <>

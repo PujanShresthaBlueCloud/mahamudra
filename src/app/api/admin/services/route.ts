@@ -30,16 +30,16 @@ export async function POST(req: NextRequest) {
 
     const { allowed } = checkRateLimit(`services:write:${userId}`);
     if (!allowed) return NextResponse.json({ error: "Too many requests." }, { status: 429 });
-    console.log("Inside the post route here -----------------");
-
     const json = await req.json();
 
     const parsed = serviceCreateSchema.safeParse(json);
-    console.log("Inside the post route here 11 -----------------");
+    console.log("Inside the post route here 11 -----------------", parsed);
 
     if (!parsed.success) {
       return NextResponse.json({ error: "Invalid input.", details: parsed.error.flatten() }, { status: 400 });
     }
+    parsed.data.imageUrl = "/images/logo.png";
+    // parsed.data.location = "location";
     console.log(parsed.data, "parsed data ---------");
     const service = await prisma.program.create({ data: parsed.data });
 

@@ -21,6 +21,7 @@ export type ContactInput = z.infer<typeof contactSchema>;
 
 
 export const serviceCategoryEnum = z.enum(["RETREAT", "ONLINE_SESSION", "WORKSHOP", "ONE_ON_ONE"]);
+export const serviceLevelEnum = z.enum(["BEGINNER", "INTERMEDIATE", "ADVANCED", "ALL_LEVELS"]);
 export const bookingStatusEnum = z.enum(["PENDING", "CONFIRMED", "CANCELLED", "COMPLETED"]);
 
 export const serviceCreateSchema = z.object({
@@ -33,10 +34,11 @@ export const serviceCreateSchema = z.object({
     .regex(/^[a-z0-9-]+$/, "Slug must be lowercase letters, numbers, and hyphens only"),
   summary: z.string().trim().min(10).max(200),
   description: z.string().trim().min(10).max(5000),
-  level: serviceCategoryEnum,
+  level: serviceLevelEnum,
   durationDays: z.number().int().positive().max(10080), // max one week, sanity bound
   // price: z.number().nonnegative().max(1_000_000),
   // capacity: z.number().int().positive().max(10000),
+  location: z.string().trim().min(3).max(200),
   imageUrl: z.string().url().optional().nullable(),
   isActive: z.boolean().optional(),
   startDate: z.coerce.date().optional().nullable(),
