@@ -61,7 +61,7 @@ export default function HeroSection() {
               Foundations of Mahamudra
             </p>
             <p className="mt-1 font-body text-xs text-ink-soft">
-              March 2, 2026 · 5 days · Himachal Pradesh
+              March 2, 2026 · 5 days · Mahamudra hall
             </p>
           </div>
         </div>

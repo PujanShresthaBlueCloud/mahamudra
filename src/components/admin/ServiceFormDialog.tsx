@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { PrismaClient, ProgramLevel } from "@prisma/client";
-console.log(ProgramLevel, "ProgramLevel -----------------");
 import {
   Dialog,
   DialogContent,
@@ -58,13 +57,11 @@ export function ServiceFormDialog({
       // capacity: Number(form.get("capacity") || 0),
       isActive: form.get("isActive") === "on",
     };
-    console.log("payload------------------------------", payload);
     
     try {
       const url = service ? `/api/admin/services/${service.id}` : "/api/admin/services";
       const method = service ? "PATCH" : "POST";
 
-      console.log("payload------------------------------", payload);
       const res = await fetch( url, {
         method,
         headers: { "Content-Type": "application/json" },
@@ -141,7 +138,7 @@ export function ServiceFormDialog({
 
             <div>
               <Label htmlFor="location">Location </Label>
-              <Input id="location" name="location" required className="mt-1.5" />
+              <Input id="location" name="location" defaultValue={service?.location} required className="mt-1.5" />
             </div>
 
             <div>

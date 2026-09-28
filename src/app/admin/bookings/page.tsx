@@ -3,9 +3,9 @@ import { BookingsTable } from "@/components/admin/BookingsTable";
 import { prisma } from "@/lib/db";
 
 export default async function AdminBookingsPage() {
-  const bookings = await prisma.booking.findMany({
+  const bookings = await prisma.registration.findMany({
     orderBy: { createdAt: "desc" },
-    include: { service: { select: { title: true } } },
+    include: { program: { select: { title: true } } },
   });
 
   const serialized = bookings.map((b) => ({ ...b, createdAt: b.createdAt.toISOString() }));

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
-import { bookingUpdateSchema } from "@/lib/validations";
+import { bookingUpdateSchema } from "@/lib/validation";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { logAdminAction } from "@/lib/audit";
 import { handleApiError, noStore } from "@/lib/api-helpers";
@@ -18,11 +18,12 @@ export async function PATCH(req: NextRequest, { params }: RouteContext) {
 
     const json = await req.json();
     const parsed = bookingUpdateSchema.safeParse(json);
+    console.log("parsed------------------------------", parsed);
     if (!parsed.success) {
       return NextResponse.json({ error: "Invalid input.", details: parsed.error.flatten() }, { status: 400 });
     }
 
-    const booking = await prisma.booking.update({ where: { id }, data: parsed.data });
+    const booking = await prisma.registration.update({ where: { id }, data: parsed.data });
 
     await logAdminAction({
       actorId: userId,

@@ -18,14 +18,21 @@ export type ServiceRow = {
   // price: string | number;
   // capacity: number;
   isActive: boolean;
+  location: string;
   _count?: { registrations: number };
 };
 
-const CATEGORY_LABEL: Record<string, string> = {
-  RETREAT: "Retreat",
-  ONLINE_SESSION: "Online session",
-  WORKSHOP: "Workshop",
-  ONE_ON_ONE: "One-on-one",
+// const CATEGORY_LABEL: Record<string, string> = {
+//   RETREAT: "Retreat",
+//   ONLINE_SESSION: "Online session",
+//   WORKSHOP: "Workshop",
+//   ONE_ON_ONE: "One-on-one",
+// };
+const LEVEL_LABEL: Record<string, string> = {
+  BEGINNER: "Beginner",
+  INTERMEDIATE: "Intermediate",
+  ADVANCED: "Advanced",
+  ALL_LEVELS: "All levels",
 };
 
 export function ServicesTable({ initialServices }: { initialServices: ServiceRow[] }) {
@@ -82,10 +89,11 @@ export function ServicesTable({ initialServices }: { initialServices: ServiceRow
         <TableHeader>
           <TableRow>
             <TableHead>Title</TableHead>
-            <TableHead>Category</TableHead>
-            <TableHead>Price</TableHead>
-            <TableHead>Capacity</TableHead>
-            <TableHead>Bookings</TableHead>
+            {/* <TableHead>Category</TableHead> */}
+            <TableHead>Level</TableHead>
+            {/* <TableHead>Price</TableHead> */}
+            {/* <TableHead>Capacity</TableHead> */}
+            <TableHead>Registrations</TableHead>
             <TableHead>Status</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
@@ -94,13 +102,14 @@ export function ServicesTable({ initialServices }: { initialServices: ServiceRow
           {services.map((service) => (
             <TableRow key={service.id}>
               <TableCell className="font-medium text-stone-900">{service.title}</TableCell>
-              <TableCell>{CATEGORY_LABEL[service.category] ?? service.category}</TableCell>
-              <TableCell>${Number(service.price).toFixed(2)}</TableCell>
-              <TableCell>{service.capacity}</TableCell>
-              <TableCell>{service._count?.bookings ?? 0}</TableCell>
+              {/* <TableCell>{CATEGORY_LABEL[service.category] ?? service.category}</TableCell> */}
+              <TableCell>{LEVEL_LABEL[service.level] ?? service.level}</TableCell>
+              {/* <TableCell>${Number(service.price).toFixed(2)}</TableCell> */}
+              {/* <TableCell>{service.capacity}</TableCell> */}
+              <TableCell>{service._count?.registrations ?? 0}</TableCell>
               <TableCell>
-                <Badge variant={service.isPublished ? "default" : "neutral"}>
-                  {service.isPublished ? "Published" : "Draft"}
+                <Badge variant={service.isActive ? "default" : "neutral"}>
+                  {service.isActive ? "Published" : "Draft"}
                 </Badge>
               </TableCell>
               <TableCell className="text-right">

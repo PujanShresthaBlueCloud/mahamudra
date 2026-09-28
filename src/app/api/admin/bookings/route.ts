@@ -11,9 +11,9 @@ export async function GET() {
     const { allowed } = checkRateLimit(`bookings:list:${userId}`);
     if (!allowed) return NextResponse.json({ error: "Too many requests." }, { status: 429 });
 
-    const bookings = await prisma.booking.findMany({
+    const bookings = await prisma.registration.findMany({
       orderBy: { createdAt: "desc" },
-      include: { service: { select: { title: true } } },
+      include: { program: { select: { title: true } } },
     });
 
     return noStore(NextResponse.json({ bookings }));

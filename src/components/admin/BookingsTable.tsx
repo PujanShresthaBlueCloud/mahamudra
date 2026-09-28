@@ -8,10 +8,12 @@ export type BookingRow = {
   id: string;
   fullName: string;
   email: string;
-  participants: number;
+  // participants: number;
+  phone: string | null;
+  message: string | null;
   status: "PENDING" | "CONFIRMED" | "CANCELLED" | "COMPLETED";
   createdAt: string;
-  service: { title: string };
+  program: { title: string };
 };
 
 const STATUS_VARIANT: Record<BookingRow["status"], "default" | "warning" | "danger" | "neutral"> = {
@@ -34,6 +36,7 @@ export function BookingsTable({ initialBookings }: { initialBookings: BookingRow
         body: JSON.stringify({ status }),
       });
       const data = await res.json();
+      console.log("data------------------------------", data);
       if (!res.ok) throw new Error(data.error);
       setBookings((prev) => prev.map((b) => (b.id === id ? { ...b, status } : b)));
     } catch {
@@ -49,8 +52,8 @@ export function BookingsTable({ initialBookings }: { initialBookings: BookingRow
       <TableHeader>
         <TableRow>
           <TableHead>Guest</TableHead>
-          <TableHead>Service</TableHead>
-          <TableHead>Participants</TableHead>
+          <TableHead>Program</TableHead>
+          {/* <TableHead>Participants</TableHead> */}
           <TableHead>Status</TableHead>
           <TableHead className="text-right">Update</TableHead>
         </TableRow>
@@ -62,8 +65,8 @@ export function BookingsTable({ initialBookings }: { initialBookings: BookingRow
               <p className="font-medium text-stone-900">{b.fullName}</p>
               <p className="text-xs text-stone-500">{b.email}</p>
             </TableCell>
-            <TableCell>{b.service.title}</TableCell>
-            <TableCell>{b.participants}</TableCell>
+            <TableCell>{b.program.title}</TableCell>
+            {/* <TableCell>{b.participants}</TableCell> */}
             <TableCell>
               <Badge variant={STATUS_VARIANT[b.status]}>{b.status}</Badge>
             </TableCell>
