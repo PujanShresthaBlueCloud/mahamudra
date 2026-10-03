@@ -6,7 +6,7 @@ import type { ProgramCardData } from "@/types";
 export const metadata = {
   title: "Registration — Mahamudra",
 };
-
+const FALLBACK_IMAGE = "/images/logo.png";
 export default async function RegistrationPage() {
   const programs = await getActivePrograms();
   const programCards: ProgramCardData[] = programs.map((p) => ({
@@ -14,7 +14,7 @@ export default async function RegistrationPage() {
     title: p.title,
     slug: p.slug,
     summary: p.summary,
-    imageUrl: p.imageUrl,
+    imageUrl: p.imageUrl ?? FALLBACK_IMAGE,
     location: p.location,
     durationDays: p.durationDays,
     level: p.level,

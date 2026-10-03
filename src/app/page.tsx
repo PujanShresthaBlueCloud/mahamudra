@@ -35,7 +35,7 @@ export default async function HomePage() {
     name: t.name,
     title: t.title,
     bio: t.bio,
-    imageUrl: t.imageUrl,
+    imageUrl: t.imageUrl ?? FALLBACK_IMAGE,
   }));
 
   const testimonialCards: TestimonialCardData[] = testimonials.map((t) => ({

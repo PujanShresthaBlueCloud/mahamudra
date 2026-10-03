@@ -36,9 +36,7 @@ export async function PATCH(req: NextRequest, { params }: RouteContext) {
       console.log("parsed inside patch function error------------------------------");
       return NextResponse.json({ error: "Invalid input.", details: parsed.error.flatten() }, { status: 400 });
     }
-    console.log("parsed inside patch function------------------------------", parsed.data);
-    // parsed.data.imageUrl = "/images/logo.png";
-    // parsed.data.location = "Kathmandu, Nepal";
+    
     const service = await prisma.program.update({ where: { id }, data: parsed.data });
 
     await logAdminAction({
