@@ -43,7 +43,7 @@ export async function DELETE(_req: NextRequest, { params }: RouteContext) {
     const { id } = await params;
 
     await prisma.registration.delete({ where: { id } });
-    await logAdminAction({ actorId: userId, actorEmail: email, action: "booking.delete", targetId: id });
+    await logAdminAction({ actorId: userId, actorEmail: email, action: "registration.delete", targetId: id });
 
     return noStore(NextResponse.json({ success: true }));
   } catch (err) {
