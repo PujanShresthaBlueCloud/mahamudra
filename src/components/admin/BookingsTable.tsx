@@ -13,7 +13,7 @@ export type BookingRow = {
   message: string | null;
   status: "PENDING" | "CONFIRMED" | "CANCELLED" | "COMPLETED";
   createdAt: string;
-  program: { title: string } | null;
+  program: { title: string };
 };
 
 const STATUS_VARIANT: Record<BookingRow["status"], "default" | "warning" | "danger" | "neutral"> = {
