@@ -21,7 +21,6 @@ export async function PATCH(req: NextRequest, { params }: RouteContext) {
     if (!parsed.success) {
       return NextResponse.json({ error: "Invalid input.", details: parsed.error.flatten() }, { status: 400 });
     }
-    console.log("parsed.data------------------------------", parsed.data);
     const booking = await prisma.registration.update({ where: { id }, data: parsed.data });
 
     await logAdminAction({
@@ -43,7 +42,7 @@ export async function DELETE(_req: NextRequest, { params }: RouteContext) {
     const { userId, email } = await requireAdmin();
     const { id } = await params;
 
-    await prisma.booking.delete({ where: { id } });
+    await prisma.registration.delete({ where: { id } });
     await logAdminAction({ actorId: userId, actorEmail: email, action: "booking.delete", targetId: id });
 
     return noStore(NextResponse.json({ success: true }));
