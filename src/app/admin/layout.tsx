@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { Sidebar } from "@/components/admin/Sidebar";
 import { requireAdmin, UnauthorizedError, ForbiddenError } from "@/lib/auth";
