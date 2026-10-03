@@ -133,7 +133,7 @@ export default function RegistrationForm({ programs }: { programs: ProgramCardDa
 
       <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="font-body text-xs text-ink-soft">
-          Submitting this form does not confirm payment — we'll follow up by
+          Submitting this form does not confirm participation — we'll follow up by
           email with next steps.
         </p>
         <button

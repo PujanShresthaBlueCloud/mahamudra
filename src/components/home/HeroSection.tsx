@@ -58,10 +58,10 @@ export default function HeroSection() {
           <div className="absolute -bottom-8 left-1/2 w-[85%] -translate-x-1/2 rounded-xl2 border border-line bg-white/95 p-5 shadow-sm backdrop-blur sm:left-6 sm:w-auto sm:translate-x-0">
             <p className="font-body text-xs font-medium text-pine">Next intake</p>
             <p className="mt-1 font-display text-lg text-ink">
-              Foundations of Mahamudra
+              Mahamudra meditation
             </p>
             <p className="mt-1 font-body text-xs text-ink-soft">
-              March 2, 2026 · 5 days · Mahamudra hall
+               From 15th to 25th of every month.
             </p>
           </div>
         </div>

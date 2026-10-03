@@ -34,9 +34,7 @@ export default function CodeOfConductPage() {
         Code of conduct
       </h1>
       <p className="mt-5 max-w-2xl font-body text-base leading-relaxed text-ink-soft">
-        Everyone who registers for a Mahamudra program agrees to the
-        following. These exist so every student — new or returning — can
-        practice in a room that feels safe and quiet.
+        The Mahamudra program is **NOT** available online. You need to be physically present at the location for 10 days. The program runs from 15th to 25th of the active month. Once you join in, you must follow several codes of conduct during your stay as mentioned below.
       </p>
 
       <div className="mt-12 grid gap-8 sm:grid-cols-2">

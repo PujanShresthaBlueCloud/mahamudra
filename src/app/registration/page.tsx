@@ -30,10 +30,9 @@ export default async function RegistrationPage() {
           Register for a retreat
         </h1>
         <p className="max-w-lg font-body text-base leading-relaxed text-ink-soft">
-          Fill in your details below and choose a program if you already know
-          which one you'd like to join. We'll follow up by email within two
-          business days with payment and preparation instructions.
-        </p>
+          Please fill in your details below and choose a program. We will follow up by email within few
+          business days.
+        </p>  
       </div>
 
       <div className="mt-10 max-w-2xl">
