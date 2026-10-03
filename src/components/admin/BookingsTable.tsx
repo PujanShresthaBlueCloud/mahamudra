@@ -13,7 +13,7 @@ export type BookingRow = {
   message: string | null;
   status: "PENDING" | "CONFIRMED" | "CANCELLED" | "COMPLETED";
   createdAt: string;
-  program: { title: string };
+  program: { title: string } | null ;
 };
 
 const STATUS_VARIANT: Record<BookingRow["status"], "default" | "warning" | "danger" | "neutral"> = {
@@ -64,7 +64,7 @@ export function BookingsTable({ initialBookings }: { initialBookings: BookingRow
               <p className="font-medium text-stone-900">{b.fullName}</p>
               <p className="text-xs text-stone-500">{b.email}</p>
             </TableCell>
-            <TableCell>{b.program.title}</TableCell>
+            <TableCell>{b.program?.title || "N/A"}</TableCell>
             {/* <TableCell>{b.participants}</TableCell> */}
             <TableCell>
               <Badge variant={STATUS_VARIANT[b.status]}>{b.status}</Badge>
