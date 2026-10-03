@@ -33,7 +33,6 @@ export async function PATCH(req: NextRequest, { params }: RouteContext) {
     const json = await req.json();
     const parsed = serviceUpdateSchema.safeParse(json);
     if (!parsed.success) {
-      console.log("parsed inside patch function error------------------------------");
       return NextResponse.json({ error: "Invalid input.", details: parsed.error.flatten() }, { status: 400 });
     }
     
