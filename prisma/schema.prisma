@@ -22,7 +22,7 @@ model Program {
   slug          String         @unique
   summary       String
   description   String
-  imageUrl      String
+  imageUrl      String?
   location      String
   durationDays  Int
   level         ProgramLevel   @default(ALL_LEVELS)
