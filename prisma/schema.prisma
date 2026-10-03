@@ -86,6 +86,7 @@ enum RegistrationStatus {
   PENDING
   CONFIRMED
   CANCELLED
+  COMPLETED
 }
 
 /// A message submitted from the Contact Us page.

@@ -13,7 +13,7 @@ export type BookingRow = {
   message: string | null;
   status: "PENDING" | "CONFIRMED" | "CANCELLED" | "COMPLETED";
   createdAt: string;
-  program: { title: string };
+  program: { title: string } | null;
 };
 
 const STATUS_VARIANT: Record<BookingRow["status"], "default" | "warning" | "danger" | "neutral"> = {
@@ -36,7 +36,6 @@ export function BookingsTable({ initialBookings }: { initialBookings: BookingRow
         body: JSON.stringify({ status }),
       });
       const data = await res.json();
-      console.log("data------------------------------", data);
       if (!res.ok) throw new Error(data.error);
       setBookings((prev) => prev.map((b) => (b.id === id ? { ...b, status } : b)));
     } catch {
