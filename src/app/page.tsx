@@ -9,6 +9,8 @@ import type { ProgramCardData, TeacherCardData, TestimonialCardData } from "@/ty
 // Revalidate this page's data every hour rather than on every request —
 // program/teacher/testimonial content doesn't change minute to minute.
 export const revalidate = 3600;
+const FALLBACK_IMAGE = "/images/logo.png";
+
 
 export default async function HomePage() {
   const [programs, teachers, testimonials] = await Promise.all([
@@ -22,7 +24,7 @@ export default async function HomePage() {
     title: p.title,
     slug: p.slug,
     summary: p.summary,
-    imageUrl: p.imageUrl,
+    imageUrl: p.imageUrl || FALLBACK_IMAGE,
     location: p.location,
     durationDays: p.durationDays,
     level: p.level,
