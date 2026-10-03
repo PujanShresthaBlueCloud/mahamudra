@@ -24,7 +24,7 @@ export default async function HomePage() {
     title: p.title,
     slug: p.slug,
     summary: p.summary,
-    imageUrl: p.imageUrl || FALLBACK_IMAGE,
+    imageUrl: p.imageUrl ?? FALLBACK_IMAGE,
     location: p.location,
     durationDays: p.durationDays,
     level: p.level,
