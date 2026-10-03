@@ -15,7 +15,7 @@ export default function ContactUsPage() {
           </h1>
           <p className="mt-4 max-w-sm font-body text-base leading-relaxed text-ink-soft">
             Questions about a program, accessibility, or anything else —
-            we're glad to help.
+            we are glad to help.
           </p>
 
           <div className="mt-10 flex flex-col gap-6">

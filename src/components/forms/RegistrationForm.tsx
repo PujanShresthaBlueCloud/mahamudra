@@ -62,9 +62,9 @@ export default function RegistrationForm({ programs }: { programs: ProgramCardDa
     return (
       <div className="flex flex-col items-center rounded-xl2 border border-line bg-white p-10 text-center">
         <CheckCircle2 className="h-10 w-10 text-pine" />
-        <h3 className="mt-4 font-display text-2xl text-ink">You're registered.</h3>
+        <h3 className="mt-4 font-display text-2xl text-ink">You&aposre registered.</h3>
         <p className="mt-2 max-w-sm font-body text-sm text-ink-soft">
-          We've received your registration and will email you with payment and
+          We&aposve received your registration and will email you with payment and
           preparation details.
         </p>
       </div>
@@ -109,7 +109,7 @@ export default function RegistrationForm({ programs }: { programs: ProgramCardDa
 
         <Field label="Program" htmlFor="programId">
           <select id="programId" name="programId" defaultValue="" className={inputClass(false)}>
-            <option value="">I'm not sure yet</option>
+            <option value="">I&aposm not sure yet</option>
             {programs.map((p) => (
               <option key={p.id} value={p.id}>
                 {p.title}
@@ -133,7 +133,7 @@ export default function RegistrationForm({ programs }: { programs: ProgramCardDa
 
       <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="font-body text-xs text-ink-soft">
-          Submitting this form does not confirm participation — we'll follow up by
+          Submitting this form does not confirm participation — we&aposll follow up by
           email with next steps.
         </p>
         <button

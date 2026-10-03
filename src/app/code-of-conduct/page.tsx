@@ -56,7 +56,7 @@ export default function CodeOfConductPage() {
       <p className="mt-10 max-w-2xl font-body text-sm leading-relaxed text-ink-soft">
         Teachers reserve the right to ask a student to leave a program, without
         refund, if these principles are broken in a way that affects other
-        students' practice.
+        students&apos; practice.
       </p>
     </main>
   );

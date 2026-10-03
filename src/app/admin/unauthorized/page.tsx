@@ -5,7 +5,7 @@ export default function UnauthorizedPage() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-stone-50 px-4 text-center">
       <ShieldAlert className="h-10 w-10 text-rose-600" strokeWidth={1.5} />
-      <h1 className="text-2xl font-semibold text-stone-900">You don't have access to this page</h1>
+      <h1 className="text-2xl font-semibold text-stone-900">You do nothave access to this page</h1>
       <p className="max-w-sm text-sm text-stone-600">
         This area is restricted to Mahamudra admins. If you believe this is a
         mistake, contact the site owner to have your account upgraded.
