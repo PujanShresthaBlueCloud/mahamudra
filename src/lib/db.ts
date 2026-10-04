@@ -1,8 +1,6 @@
+// lib/db.ts
 import { PrismaClient } from "@prisma/client";
 
-// Standard Next.js Prisma singleton pattern: without this, hot-reloading
-// in dev creates a new PrismaClient (and a new pool of DB connections)
-// on every file save.
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
 export const prisma =
