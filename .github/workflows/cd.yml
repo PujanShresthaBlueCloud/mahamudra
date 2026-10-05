@@ -22,7 +22,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: deploy-bundle
-          github-token: ${{ vars.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
 
       - name: Upload bundle to GoDaddy
