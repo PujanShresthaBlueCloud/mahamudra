@@ -16,6 +16,8 @@ jobs:
     name: Build and Test
     runs-on: ubuntu-latest
 
+    environment: production
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -29,6 +31,36 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Verify environment variables
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "DATABASE_URL is missing"
+            exit 1
+          fi
+
+          if [ -z "$NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY" ]; then
+            echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY is missing"
+            exit 1
+          fi
+
+          if [ -z "$CLERK_SECRET_KEY" ]; then
+            echo "CLERK_SECRET_KEY is missing"
+            exit 1
+          fi
+
+          echo "Required environment variables are available."
+        env:
+          DATABASE_URL: ${{ vars.DATABASE_URL }}
+          DIRECT_URL: ${{ vars.DIRECT_URL }}
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ vars.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+          CLERK_SECRET_KEY: ${{ vars.CLERK_SECRET_KEY }}
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+        env:
+          DATABASE_URL: ${{ vars.DATABASE_URL }}
+          DIRECT_URL: ${{ vars.DIRECT_URL }}
+
       - name: Run lint
         run: npm run lint
 
@@ -39,6 +71,6 @@ jobs:
         run: npm run build
         env:
           DATABASE_URL: ${{ vars.DATABASE_URL }}
+          DIRECT_URL: ${{ vars.DIRECT_URL }}
           NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ vars.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
           CLERK_SECRET_KEY: ${{ vars.CLERK_SECRET_KEY }}
-          DIRECT_URL: ${{ vars.DIRECT_URL }}
