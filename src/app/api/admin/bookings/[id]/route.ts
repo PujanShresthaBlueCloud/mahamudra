@@ -5,7 +5,7 @@ import { bookingUpdateSchema } from "@/lib/validation";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { logAdminAction } from "@/lib/audit";
 import { handleApiError, noStore } from "@/lib/api-helpers";
-
+export const dynamic = "force-dynamic";
 type RouteContext = { params: Promise<{ id: string }> };
 
 export async function PATCH(req: NextRequest, { params }: RouteContext) {

@@ -3,7 +3,7 @@ import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { handleApiError, noStore } from "@/lib/api-helpers";
-
+export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     const { userId } = await requireAdmin();
