@@ -30,7 +30,7 @@ jobs:
         with:
           host: ${{ vars.CPANEL_SSH_HOST }}
           username: ${{ vars.CPANEL_SSH_USER }}
-          key: ${{ vars.CPANEL_SSH_PRIVATE_KEY }}
+          key: ${{ secrets.CPANEL_SSH_PRIVATE_KEY }}
           port: ${{ vars.CPANEL_SSH_PORT }}
           source: "deploy.tar.gz"
           target: "/home/mahamudr/"
@@ -40,19 +40,34 @@ jobs:
         with:
           host: ${{ vars.CPANEL_SSH_HOST }}
           username: ${{ vars.CPANEL_SSH_USER }}
-          key: ${{ vars.CPANEL_SSH_PRIVATE_KEY }}
+          key: ${{ secrets.CPANEL_SSH_PRIVATE_KEY }}
           port: ${{ vars.CPANEL_SSH_PORT }}
           script: |
             set -e
-            cd /home/mahamudr/new.mahamudra.com
+            cd /home/mahamudr
+            mkdir -p release-new
+            tar -xzf deploy.tar.gz -C release-new
+            rm deploy.tar.gz
 
+            cd new.mahamudra.com
             rm -rf .next node_modules
+            cd ..
+            cp -a release-new/. new.mahamudra.com/
+            rm -rf release-new
 
-            tar -xzf /home/mahamudr/deploy.tar.gz -C /home/mahamudr/new.mahamudra.com
-            rm /home/mahamudr/deploy.tar.gz
+            mkdir -p new.mahamudra.com/tmp
+            touch new.mahamudra.com/tmp/restart.txt
+            
+            # set -e
+            # cd /home/mahamudr/new.mahamudra.com
 
-            mkdir -p tmp
-            touch tmp/restart.txt
+            # rm -rf .next node_modules
+
+            # tar -xzf /home/mahamudr/deploy.tar.gz -C /home/mahamudr/new.mahamudra.com
+            # rm /home/mahamudr/deploy.tar.gz
+
+            # mkdir -p tmp
+            # touch tmp/restart.txt
 
       - name: Deployment summary
         run: echo "Deployed commit ${{ github.event.workflow_run.head_sha }} to new.mahamudra.com"

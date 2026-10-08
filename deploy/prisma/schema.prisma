@@ -1,0 +1,127 @@
+// Prisma schema for Mahamudra
+// Run `npm run db:generate` after any change here, and
+// `npm run db:migrate` to apply it to your database.
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.0.x"]
+}
+
+datasource db {
+  provider = "postgresql" // swap for "mysql" or "sqlite" if preferred
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+
+}
+
+/// A retreat, course, or ongoing program that can be booked.
+/// Backs the home page's "Programs" carousel and the registration form's
+/// program dropdown.
+model Program {
+  id            String         @id @default(cuid())
+  title         String
+  slug          String         @unique
+  summary       String
+  description   String
+  imageUrl      String?
+  location      String
+  durationDays  Int
+  level         ProgramLevel   @default(ALL_LEVELS)
+  isActive      Boolean        @default(true)
+  startDate     DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  registrations Registration[]
+
+  @@index([isActive])
+}
+
+enum ProgramLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  ALL_LEVELS
+}
+
+/// A teacher/guide profile. Backs the home page's "Teachers" carousel.
+model Teacher {
+  id        String   @id @default(cuid())
+  name      String
+  title     String
+  bio       String
+  imageUrl  String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+/// A student/guest quote. Backs the home page's "Testimonials" carousel.
+model Testimonial {
+  id        String   @id @default(cuid())
+  quote     String
+  author    String
+  role      String?
+  imageUrl  String?
+  rating    Int      @default(5)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+/// A booking submitted from the Registration page.
+model Registration {
+  id          String             @id @default(cuid())
+  fullName    String
+  email       String
+  phone       String?
+  program     Program?           @relation(fields: [programId], references: [id])
+  programId   String?
+  message     String?
+  status      RegistrationStatus @default(PENDING)
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  @@index([email])
+  @@index([status])
+}
+
+enum RegistrationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+/// A message submitted from the Contact Us page.
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+// Contributions from the public "Support us" page.
+model Contribution {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  amount    Decimal  @db.Decimal(10, 2)
+  message   String?
+  createdAt DateTime @default(now())
+}
+
+// Every admin mutation is written here — required for the "highly secure"
+// requirement: an admin's create/update/delete actions are traceable.
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String // Clerk user ID
+  actorEmail String
+  action     String // e.g. "service.create", "booking.delete"
+  targetId   String? // ID of the affected record
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  @@index([actorId])
+  @@index([action])
+}

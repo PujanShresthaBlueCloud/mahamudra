@@ -34,12 +34,9 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <ClerkProvider>
-
     <html lang="en" className={cn(spectral.variable, workSans.variable, "font-sans", inter.variable)}>
       <body className="flex min-h-screen flex-col font-body antialiased">
-        <Navbar />
         <div className="flex-1">{children}</div>
-        <Footer />
       </body>
     </html>
     </ClerkProvider>

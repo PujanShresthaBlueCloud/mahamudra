@@ -341,3 +341,44 @@ The following locations have been searched:
   digest: '1689243671'
 }
 ```
+
+
+## What's causing this
+
+Prisma's Client isn't pure JavaScript — it bundles a compiled binary ("query engine") specific to the OS/architecture it was generated on. The error is telling you exactly what happened: **this Client was generated on your Mac** (`darwin-arm64` — Apple Silicon), but it's now running on GoDaddy's Linux server, which needs a completely different binary (`debian-openssl-1.0.x`). A Mac binary simply cannot run on Linux — this isn't a config typo, it's an actual missing file.
+
+This almost certainly happened during the **manual deploy test** we walked through a couple messages ago — when you ran `npm run build` locally on your Mac to assemble the standalone folder and zip-uploaded it, `node_modules/.prisma` (containing the compiled engine) came from your Mac's `npx prisma generate`, not from a Linux machine.
+
+## The fix — two parts
+
+### 1. Tell Prisma to also generate the Linux engine
+
+In `schema.prisma`:
+
+```prisma
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.0.x"]
+}
+```
+
+`"native"` keeps your local Mac development working as before; `"debian-openssl-1.0.x"` is the exact target GoDaddy's server needs (per the error message — their shared hosting runs an older OpenSSL version, which is why it's `1.0.x` rather than the more common modern `3.0.x`).
+
+### 2. Regenerate — but on Linux, not your Mac
+
+This is the part that actually matters: adding `binaryTargets` only helps if `prisma generate` is **run on a machine that can produce that Linux binary**. Running `npx prisma generate` again on your Mac will add the `debian-openssl-1.0.x` engine file alongside the Mac one (Prisma can cross-generate multiple targets from one machine — it doesn't need to literally run on Linux to produce a Linux binary), so:
+
+```bash
+npx prisma generate
+npm run build
+```
+
+on your Mac again, then redo the standalone assembly steps — this time `node_modules/.prisma/client` will contain **both** engine binaries, and the right one gets picked automatically at runtime based on the OS it's actually running on.
+
+## Going forward: let CI/CD handle this, not manual uploads
+
+This exact class of bug is precisely why I'd push you back toward finishing the CI/CD pipeline rather than continuing manual zip uploads — GitHub Actions' `ubuntu-latest` runner would have generated a Linux-compatible engine automatically in most cases (its default OpenSSL target just happens to not be the specific `1.0.x` your GoDaddy plan needs, which is exactly why step 1's explicit `binaryTargets` is still necessary either way). Once `binaryTargets` includes `debian-openssl-1.0.x`, your existing CI pipeline's `npx prisma generate` step will produce the correct engine automatically on every deploy, and you won't hit this again from either path.
+
+## After fixing
+
+Re-upload (or redeploy via CI/CD), restart the Node app, and check `/` and `/admin` again — this was specifically breaking any page that queries Prisma (your homepage's `programs.findMany()`, matching the stack trace), so fixing this should resolve the registration API too if its failure was secondary to this same root cause.
