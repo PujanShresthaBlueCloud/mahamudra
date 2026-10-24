@@ -7,6 +7,7 @@ import { Menu, X, Flower2, CalendarHeart } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
+  { href: "/", label: "Home" },
   { href: "/about-us", label: "About Us" },
   { href: "/registration", label: "Registration" },
   { href: "/code-of-conduct", label: "Code of Conduct" },

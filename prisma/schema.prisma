@@ -70,8 +70,12 @@ model Testimonial {
 model Registration {
   id          String             @id @default(cuid())
   fullName    String
+  gender      String?
+  age         Int?
   email       String
   phone       String?
+  address     String?
+  profession  String?
   program     Program?           @relation(fields: [programId], references: [id])
   programId   String?
   message     String?

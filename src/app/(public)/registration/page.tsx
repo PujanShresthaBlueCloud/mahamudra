@@ -23,9 +23,9 @@ export default async function RegistrationPage() {
   return (
     <main className="mx-auto max-w-content px-6 py-16 lg:px-10 lg:py-20">
       <div className="flex flex-col items-start gap-3">
-        <span className="flex h-11 w-11 items-center justify-center rounded-full bg-saffron/10">
+        {/* <span className="flex h-11 w-11 items-center justify-center rounded-full bg-saffron/10">
           <CalendarHeart className="h-5 w-5 text-saffron" />
-        </span>
+        </span> */}
         <h1 className="font-display text-4xl font-medium text-ink sm:text-5xl">
           Register for a retreat
         </h1>

@@ -13,8 +13,8 @@ import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/admin/services", label: "Services", icon: Flower2 },
-  { href: "/admin/bookings", label: "Bookings", icon: CalendarCheck },
+  { href: "/admin/services", label: "Programs", icon: Flower2 },
+  { href: "/admin/bookings", label: "Registrations", icon: CalendarCheck },
   { href: "/admin/messages", label: "Messages", icon: Mail },
   { href: "/admin/contributions", label: "Contributions", icon: HeartHandshake },
 ];

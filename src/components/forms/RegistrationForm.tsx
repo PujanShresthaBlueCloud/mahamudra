@@ -23,7 +23,11 @@ export default function RegistrationForm({ programs }: { programs: ProgramCardDa
     const payload = {
       fullName: String(data.get("fullName") || "").trim(),
       email: String(data.get("email") || "").trim(),
+      age: Number(data.get("age") || "18") || undefined,
+      gender: String(data.get("gender") || "").trim() || undefined,
       phone: String(data.get("phone") || "").trim() || undefined,
+      address: String(data.get("address") || "").trim() || undefined,
+      profession: String(data.get("profession") || "").trim() || undefined,
       programId: String(data.get("programId") || "") || undefined,
       message: String(data.get("message") || "").trim() || undefined,
     };
@@ -62,9 +66,9 @@ export default function RegistrationForm({ programs }: { programs: ProgramCardDa
     return (
       <div className="flex flex-col items-center rounded-xl2 border border-line bg-white p-10 text-center">
         <CheckCircle2 className="h-10 w-10 text-pine" />
-        <h3 className="mt-4 font-display text-2xl text-ink">You&aposre registered.</h3>
+        <h3 className="mt-4 font-display text-2xl text-ink">You are registered.</h3>
         <p className="mt-2 max-w-sm font-body text-sm text-ink-soft">
-          We&aposve received your registration and will email you with payment and
+          We have received your registration and will email you with payment and
           preparation details.
         </p>
       </div>
@@ -93,6 +97,43 @@ export default function RegistrationForm({ programs }: { programs: ProgramCardDa
             autoComplete="email"
             className={inputClass(!!errors.email)}
             placeholder="ananya@example.com"
+          />
+        </Field>
+        <Field label="Age (optional)" htmlFor="age">
+          <input
+            id="age"
+            name="age"
+            type="number"
+            min={18}
+            className={inputClass(false)}
+            placeholder="18"
+          />
+        </Field>
+        
+        <Field label="Gender (optional)" htmlFor="gender">
+          <select id="gender" name="gender" defaultValue="" className={inputClass(false)}>
+            <option value="">Select gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </Field>
+        <Field label="Address (optional)" htmlFor="address">
+          <input
+            id="address"
+            name="address"
+            type="text"
+            className={inputClass(false)}
+            placeholder="123 Main St, City, Country"
+          />
+        </Field>
+        <Field label="Profession (optional)" htmlFor="profession">
+          <input
+            id="profession"
+            name="profession"
+            type="text"
+            className={inputClass(false)}
+            placeholder="Enter your profession"
           />
         </Field>
 

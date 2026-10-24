@@ -77,9 +77,9 @@ export function ServicesTable({ initialServices }: { initialServices: ServiceRow
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <p className="text-sm text-stone-500">{services.length} service(s)</p>
+        <p className="text-sm text-stone-500">{services.length} program(s)</p>
         <Button onClick={openCreate}>
-          <Plus className="h-4 w-4" /> Add service
+          <Plus className="h-4 w-4" /> Add prgram
         </Button>
       </div>
 
