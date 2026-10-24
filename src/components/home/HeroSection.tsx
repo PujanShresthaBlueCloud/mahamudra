@@ -45,7 +45,7 @@ export default function HeroSection() {
               priority
             /> */}
             <Image
-              src="/images/banner.webp"
+              src="/images/guru_smile.jpg"
               alt="A meditation hall at dawn, prayer flags visible through an open doorway"
               fill
               sizes="(min-width: 1024px) 40vw, 90vw"
