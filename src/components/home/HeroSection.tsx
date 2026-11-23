@@ -19,7 +19,7 @@ export default function HeroSection() {
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Link
-              href="/registration"
+              href="/registration?course=mahamudra"
               className="inline-flex items-center gap-2 rounded-full bg-saffron px-6 py-3 font-body text-sm font-medium text-white transition-colors hover:bg-saffron-dark"
             >
               Reserve your place
@@ -36,14 +36,6 @@ export default function HeroSection() {
 
         <div className="relative">
           <div className="relative aspect-[4/5] overflow-hidden rounded-xl2">
-            {/* <Image
-              src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=1200&q=80"
-              alt="A meditation hall at dawn, prayer flags visible through an open doorway"
-              fill
-              sizes="(min-width: 1024px) 40vw, 90vw"
-              className="object-cover"
-              priority
-            /> */}
             <Image
               src="/images/guru_smile.jpg"
               alt="A meditation hall at dawn, prayer flags visible through an open doorway"

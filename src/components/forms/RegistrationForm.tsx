@@ -5,6 +5,8 @@ import { Loader2, CheckCircle2 } from "lucide-react";
 import { registrationSchema } from "@/lib/validation";
 import { cn } from "@/lib/utils";
 import type { ProgramCardData } from "@/types";
+import { useSearchParams } from "next/navigation";
+
 
 type Status = "idle" | "submitting" | "success" | "error";
 type Errors = Partial<Record<"fullName" | "email" | "programId", string>>;
@@ -13,6 +15,9 @@ export default function RegistrationForm({ programs }: { programs: ProgramCardDa
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Errors>({});
   const [serverError, setServerError] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const course = searchParams.get("course");
+const mahamudraPrograms = ["1st 10 days mahamudra", "2nd 10 days mahamudra", "3rd 10 days mahamudra"]
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -149,14 +154,27 @@ export default function RegistrationForm({ programs }: { programs: ProgramCardDa
         </Field>
 
         <Field label="Program" htmlFor="programId">
-          <select id="programId" name="programId" defaultValue="" className={inputClass(false)}>
-            <option value="">I&aposm not sure yet</option>
-            {programs.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.title}
-              </option>
-            ))}
-          </select>
+          {course &&
+            course === "mahamudra" ? (
+              <select id="programId" name="programId" defaultValue="" className={inputClass(false)}>
+                <option value="">Please select a program</option>
+                {mahamudraPrograms.map((p) => (
+                  <option  value={p} key={p}>
+                    {p}
+                  </option>
+                ))}
+              </select>
+            ) :(
+              <select id="programId" name="programId" defaultValue="" className={inputClass(false)}>
+                <option value="">I am not sure yet</option>
+                {programs.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.title}
+                  </option>
+                ))}
+              </select>
+            )
+        }
         </Field>
       </div>
 
